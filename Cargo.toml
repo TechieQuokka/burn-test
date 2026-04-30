@@ -1,0 +1,15 @@
+[package]
+name = "burn-test"
+version = "0.1.0"
+edition = "2024"
+
+[[bin]]
+name = "cuda_test"
+path = "src/bin/cuda_test.rs"
+
+[[bin]]
+name = "wgpu_test"
+path = "src/bin/wgpu_test.rs"
+
+[dependencies]
+burn = { version = "0.20.1", features = ["wgpu", "cuda"] }

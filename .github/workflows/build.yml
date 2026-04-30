@@ -1,0 +1,36 @@
+name: Build Windows Binaries
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Rust 설치
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+          targets: x86_64-pc-windows-msvc
+
+      - name: 캐시
+        uses: Swatinem/rust-cache@v2
+
+      - name: cuda_test 빌드
+        run: cargo build --release --bin cuda_test
+
+      - name: wgpu_test 빌드
+        run: cargo build --release --bin wgpu_test
+
+      - name: 실행파일 업로드
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-binaries
+          path: |
+            target/release/cuda_test.exe
+            target/release/wgpu_test.exe
